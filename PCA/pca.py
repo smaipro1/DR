@@ -3,19 +3,22 @@ sample_length=784
 red_sample_length=sample_length/4
 import pandas as pd
 
+#filepath_or_buffer='../DATASET/mnist_test.csv',
 df = pd.read_csv(
-    filepath_or_buffer='https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', 
+    filepath_or_buffer='../DATASET/testdata.csv', 
     header=None, 
     sep=',')
 
-df.columns=range(1,sample_length+1)
+df.columns=range(0,sample_length+1)
 df.dropna(how="all", inplace=True) # drops the empty line at file-end
 df.tail()
 
 # split data table into data X and class labels y
 
-X = df.ix[:,1:sample_len].values
+X = df.ix[:,1:sample_length].values
 y = df.ix[:,0].values
+
+
 
 import plotly.plotly as py
 from plotly.graph_objs import *
@@ -55,33 +58,26 @@ fig = Figure(data=data, layout=layout)
 py.iplot(fig)
 '''
 
-#from sklearn.preprocessing import StandardScaler
-#X_std = StandardScaler().fit_transform(X)
-def function fit_transform():
-	pass
-	
+from sklearn.preprocessing import StandardScaler
+X_std = StandardScaler().fit_transform(X)
+#def function fit_transform():
+#	pass
+#X_std=X	
 
 
 import numpy as np
-'''mean_vec = np.mean(X_std, axis=0)
-cov_mat = (X_std - mean_vec).T.dot((X_std - mean_vec)) / (X_std.shape[0]-1)
-print('Covariance matrix \n%s' %cov_mat)
-
-
 cov_mat = np.cov(X_std.T)
-
 eig_vals, eig_vecs = np.linalg.eig(cov_mat)
 
 print('Eigenvectors \n%s' %eig_vecs)
 print('\nEigenvalues \n%s' %eig_vals)
-'''
 
-u,s,v = np.linalg.svd(X_std.T)
 
-'''for ev in eig_vecs:
+
+for ev in eig_vecs:
     np.testing.assert_array_almost_equal(1.0, np.linalg.norm(ev))
 print('Everything ok!')
-'''
+exit();
 
 # Make a list of (eigenvalue, eigenvector) tuples
 eig_pairs = [(np.abs(eig_vals[i]), eig_vecs[:,i]) for i in range(len(eig_vals))]
@@ -122,8 +118,7 @@ py.iplot(fig)
 
 temp_mat=[]
 for i in range(1,red_sample_length+1):
-	temp_mata.append((eig_pairs[i-1][1].reshape(sample_length,1))
-	
+	temp_mata.append((eig_pairs[i-1][1].reshape(sample_length,1)))
 	
 matrix_w = np.hstack(temp_mat)
 
