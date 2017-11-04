@@ -1,5 +1,6 @@
 #this is pca code
-
+sample_length=784
+red_sample_length=sample_length/4
 import pandas as pd
 
 df = pd.read_csv(
@@ -7,15 +8,14 @@ df = pd.read_csv(
     header=None, 
     sep=',')
 
-df.columns=['sepal_len', 'sepal_wid', 'petal_len', 'petal_wid', 'class']
+df.columns=range(1,sample_length+1)
 df.dropna(how="all", inplace=True) # drops the empty line at file-end
-
 df.tail()
 
 # split data table into data X and class labels y
 
-X = df.ix[:,0:4].values
-y = df.ix[:,4].values
+X = df.ix[:,1:sample_len].values
+y = df.ix[:,0].values
 
 import plotly.plotly as py
 from plotly.graph_objs import *
@@ -24,7 +24,7 @@ import plotly.tools as tls
 
 # plotting histograms
 
-traces = []
+'''traces = []
 
 legend = {0:False, 1:False, 2:False, 3:True}
 
@@ -53,22 +53,20 @@ layout = Layout(barmode='overlay',
 
 fig = Figure(data=data, layout=layout)
 py.iplot(fig)
+'''
 
-
-from sklearn.preprocessing import StandardScaler
-X_std = StandardScaler().fit_transform(X)
-
-
+#from sklearn.preprocessing import StandardScaler
+#X_std = StandardScaler().fit_transform(X)
+def function fit_transform():
+	pass
+	
 
 
 import numpy as np
-mean_vec = np.mean(X_std, axis=0)
+'''mean_vec = np.mean(X_std, axis=0)
 cov_mat = (X_std - mean_vec).T.dot((X_std - mean_vec)) / (X_std.shape[0]-1)
 print('Covariance matrix \n%s' %cov_mat)
 
-
-
-print('NumPy covariance matrix: \n%s' %np.cov(X_std.T))
 
 cov_mat = np.cov(X_std.T)
 
@@ -76,30 +74,14 @@ eig_vals, eig_vecs = np.linalg.eig(cov_mat)
 
 print('Eigenvectors \n%s' %eig_vecs)
 print('\nEigenvalues \n%s' %eig_vals)
-
-
-cor_mat1 = np.corrcoef(X_std.T)
-
-eig_vals, eig_vecs = np.linalg.eig(cor_mat1)
-
-print('Eigenvectors \n%s' %eig_vecs)
-print('\nEigenvalues \n%s' %eig_vals)
-
-
-cor_mat2 = np.corrcoef(X.T)
-
-eig_vals, eig_vecs = np.linalg.eig(cor_mat2)
-
-print('Eigenvectors \n%s' %eig_vecs)
-print('\nEigenvalues \n%s' %eig_vals)
-
-
+'''
 
 u,s,v = np.linalg.svd(X_std.T)
 
-for ev in eig_vecs:
+'''for ev in eig_vecs:
     np.testing.assert_array_almost_equal(1.0, np.linalg.norm(ev))
 print('Everything ok!')
+'''
 
 # Make a list of (eigenvalue, eigenvector) tuples
 eig_pairs = [(np.abs(eig_vals[i]), eig_vecs[:,i]) for i in range(len(eig_vals))]
@@ -109,17 +91,15 @@ eig_pairs.sort()
 eig_pairs.reverse()
 
 # Visually confirm that the list is correctly sorted by decreasing eigenvalues
-print('Eigenvalues in descending order:')
-for i in eig_pairs:
-    print(i[0])
-
-
+#print('Eigenvalues in descending order:')
+#for i in eig_pairs:
+#    print(i[0])
 
 tot = sum(eig_vals)
 var_exp = [(i / tot)*100 for i in sorted(eig_vals, reverse=True)]
 cum_var_exp = np.cumsum(var_exp)
 
-trace1 = Bar(
+'''trace1 = Bar(
         x=['PC %s' %i for i in range(1,5)],
         y=var_exp,
         showlegend=False)
@@ -138,21 +118,23 @@ layout=Layout(
 fig = Figure(data=data, layout=layout)
 py.iplot(fig)
 
+'''
 
-
-matrix_w = np.hstack((eig_pairs[0][1].reshape(4,1), 
-                      eig_pairs[1][1].reshape(4,1)))
+temp_mat=[]
+for i in range(1,red_sample_length+1):
+	temp_mata.append((eig_pairs[i-1][1].reshape(sample_length,1))
+	
+	
+matrix_w = np.hstack(temp_mat)
 
 print('Matrix W:\n', matrix_w)
-
-
 
 Y = X_std.dot(matrix_w)
 
 
 traces = []
 
-for name in ('Iris-setosa', 'Iris-versicolor', 'Iris-virginica'):
+'''for name in ('Iris-setosa', 'Iris-versicolor', 'Iris-virginica'):
 
     trace = Scatter(
         x=Y[y==name,0],
@@ -176,3 +158,4 @@ layout = Layout(showlegend=True,
 fig = Figure(data=data, layout=layout)
 py.iplot(fig)
 
+'''
