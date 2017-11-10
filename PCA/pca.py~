@@ -5,7 +5,7 @@ import pandas as pd
 #filepath_or_buffer='~/DATASET/mnist_test.csv',
 
 df = pd.read_csv(
-    filepath_or_buffer='~/DATASET/testdata.csv', 
+    filepath_or_buffer='../DATASET/testdata.csv', 
     header=None, 
     sep=',')
 
@@ -17,8 +17,7 @@ df.tail()
 
 X = df.ix[:,1:sample_length].values
 y = df.ix[:,0].values
-from sklearn.preprocessing import StandardScaler
-X_std = StandardScaler().fit_transform(X)
+
 
 
 import plotly.plotly as py
