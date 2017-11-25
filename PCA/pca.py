@@ -1,17 +1,11 @@
 import numpy as np
-import pandas as pd
+import sys
 import matplotlib.pyplot as plt
+sys.path.append('../DATA_READ/')
+from read_data import *
 
+[X,Y]=read_dataset()
 
-
-sample_length=784
-red_sample_length=sample_length/4
-df = pd.read_csv(
-    filepath_or_buffer='~/DATASET/dataset.csv', 
-    header=None, 
-    sep=',')
-
-X = df.ix[:,1:sample_length].values
 print X.shape
 u,s,v = np.linalg.svd(X.T)
 red = u[0:sample_length/4,:]
