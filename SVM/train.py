@@ -10,6 +10,8 @@ from sklearn.metrics import confusion_matrix
 
 [X,Y]=read_dataset()
 X_train, X_test, Y_train, Y_test = train_test_split(X,Y,test_size=0.2)
+
+
 print X_train.shape
 print X_test.shape
 
