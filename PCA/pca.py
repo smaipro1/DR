@@ -3,23 +3,17 @@ import sys
 import matplotlib.pyplot as plt
 sys.path.append('../DATA_READ/')
 from read_data import *
-
-
 sys.path.append('../SVM/')
 from matrix_to_svm import *
 
-
-
 [X,Y]=read_dataset()
-
-#print X.shape
 u,s,v = np.linalg.svd(X.T)
 red = u[0:sample_length/4,:]
 X_red = np.dot(X,red.T)
-#print X_red.shape
-
-
 matrix_converter(X_red,Y)
+
+
+
 '''matrix = X[0].reshape((28,28))
 plt.imshow(matrix,cmap='gray') 
 plt.savefig('HELLO1')
