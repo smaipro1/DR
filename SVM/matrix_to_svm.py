@@ -1,5 +1,5 @@
 import numpy as np
-def matrix_converter(matrix,label):
+def matrix_converter(matrix,label,name):
 	a,b=matrix.shape
 	temp_array=[]
 	temp_matrix=[]
@@ -14,5 +14,5 @@ def matrix_converter(matrix,label):
 	
 	temp_matrix=np.array(temp_matrix)
 	#print temp_matrix.shape
-	np.savetxt("pca_reduced_data.csv", temp_matrix, delimiter=",")
+	np.savetxt(name, temp_matrix, delimiter=",")
 	

@@ -7,23 +7,15 @@ import pylab as plt
 sys.path.append('../DATA_READ/')
 from read_data import * 
 
-def norm(vec):
-    return sqrt(sum(vec**2))
+def mds(d, dimensions = 2):
+    """
+    Multidimensional Scaling - Given a matrix of interpoint distances,
+    find a set of low dimensional points that have similar interpoint
+    distances.
+    """
 
-def main():
-
-    [X,Y]=read_dataset(sys.argv[1])
-    points=X
-    labels=Y
-
-    (n, distance) = points.shape;
-    distance = zeros((n,n))
-    for (i, pointi) in enumerate(points):
-        for (j, pointj) in enumerate(points):
-            distance[i,j] = norm(pointi - pointj)
-
-    (n,n) = distance.shape
-    E = (-0.5 * distance**2)
+    (n,n) = d.shape
+    E = (-0.5 * d**2)
 
     # Use mat to get column and row means to act as column and row means.
     Er = mat(mean(E,1))
@@ -36,7 +28,28 @@ def main():
 
     Y = U * sqrt(S)
 
-    Y, eigs = Y[:,0:2], S
+    return (Y[:,0:dimensions], S)
+
+def norm(vec):
+    return sqrt(sum(vec**2))
+
+def square_points(size):
+    nsensors = size ** 2
+    return array([(i / size, i % size) for i in range(nsensors)])
+
+def main():
+
+    [X,Y]=read_dataset(sys.argv[1])
+    points=X
+    labels=Y
+
+    (n, d) = points.shape;
+    distance = zeros((n,n))
+    for (i, pointi) in enumerate(points):
+        for (j, pointj) in enumerate(points):
+            distance[i,j] = norm(pointi - pointj)
+
+    Y, eigs = mds(distance)
     plt.figure(1)
     classes = list()
     for i in labels:

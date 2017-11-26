@@ -1,7 +1,7 @@
 import pandas as pd
 sample_length=784
 def read_dataset(dataset_in):
-
+	######gets the datasets pixels and labels
 	red_sample_length=sample_length/4
 	df = pd.read_csv(
 	#filepath_or_buffer='~/DATASET/dataset.csv',

@@ -14,10 +14,7 @@ X_red = np.dot(X,red.T)
 sys.path.append('../SVM/')
 from matrix_to_svm import *
 
-matrix_converter(X_red,Y)
-
-
-
+matrix_converter(X_red,Y,'pca_reduced_data.csv')
 '''matrix = X[0].reshape((28,28))
 plt.imshow(matrix,cmap='gray') 
 plt.savefig('HELLO1')

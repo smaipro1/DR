@@ -1,42 +1,53 @@
-import numpy as np
 import sys
-import matplotlib.pyplot as plt
+import os
+
+import numpy as np
+from scipy import linalg as LA
+
+np.set_printoptions(precision=3, linewidth=110, suppress=True)
+
+def LDA(data, labels, dim_rescale=196):
+    assert data.shape[0] == labels.shape[0]
+    # mean center the data array
+    data -= data.mean(axis=0)
+    nrow, ndim = data.shape
+    # pre-allocate sw, sb arrays (both same shape as covariance matrix)
+    # s_wc: array encoding 'within class' scatter
+    # s_bc: array encoding 'between class' scatter
+    s_wc = np.zeros((ndim, ndim))
+    s_bc = np.zeros((ndim, ndim))
+    R = np.cov(data.T)
+    classes = np.unique(labels)
+    for c in range(len(classes)):
+        # create an index only for data rows whose class label = classes[c]
+        idx = np.squeeze(np.where(labels == classes[c]))
+        d = np.squeeze(data[idx,:])
+        class_cov = np.cov(d.T)
+        s_wc += float(idx.shape[0]) / nrow * class_cov
+    s_bc = R - s_wc
+    # now solve for w then compute the mapped data
+    evals, evecs = LA.eig(s_wc, s_bc)
+    np.ascontiguousarray(evals)
+    np.ascontiguousarray(evecs)
+    # sort the eigenvectors based on eigenvalues sort order
+    idx = np.argsort(evals)
+    idx = idx[::-1]
+    evecs = evecs[:,idx]
+    # take just number of eigenvectors = dim_rescale
+    evecs_dr = evecs[:,:dim_rescale]
+    # multiply data array & remaining set of eigenvectors
+    rescaled_data = np.dot(data, evecs_dr)
+    return rescaled_data, evecs_dr
+
 sys.path.append('../DATA_READ/')
 from read_data import *
-import math
-[X,Y]=read_dataset(sys.argv[1])
+datain=str(sys.argv[1])
+[X,Y]=read_dataset(datain)
+X = X.astype(np.float64)
+[X_red,temp]=LDA(X,Y)
+X_red=X_red.real
 
-s = (784,784)
+sys.path.append('../SVM/')
+from matrix_to_svm import *
+matrix_converter(X_red,Y,'lda_reduced_data.csv')
 
-np.set_printoptions(precision=10)
-
-mean_vectors = []
-for cl in range(0,10):
-    mean_vectors.append(np.mean(X[Y==cl], axis=0))
-    #print('Mean Vector class %s: %s\n' %(cl, mean_vectors[cl-1]))
-
-
-
-S_W = np.zeros(s)
-for cl,mv in zip(range(0,10), mean_vectors):
-    class_sc_mat = np.zeros(s)                  # scatter matrix for every class
-    for row in X[Y == cl]:
-        row, mv = row.reshape(sample_length,1), mv.reshape(sample_length,1) # make column vectors
-        class_sc_mat += np.dot((row-mv),(row-mv).T)
-    S_W += class_sc_mat                             # sum class scatter matrices
-print('within-class Scatter Matrix:\n', S_W)
-# for i in S_W:
-	# print i
-print np.linalg.det(S_W)
-
-overall_mean = np.mean(X, axis=0)
-
-S_B = np.zeros(s)
-for i,mean_vec in enumerate(mean_vectors):  
-    n = X[Y==i,:].shape[0]
-    mean_vec = mean_vec.reshape(sample_length,1) # make column vector
-    overall_mean = overall_mean.reshape(sample_length,1) # make column vector
-    S_B += n * (mean_vec - overall_mean).dot((mean_vec - overall_mean).T)
-
-print('between-class Scatter Matrix:\n', S_B)
-S = np.linalg.inv(S_W)*S_B
