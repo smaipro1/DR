@@ -28,3 +28,15 @@ print('within-class Scatter Matrix:\n', S_W)
 # for i in S_W:
 	# print i
 print np.linalg.det(S_W)
+
+overall_mean = np.mean(X, axis=0)
+
+S_B = np.zeros(s)
+for i,mean_vec in enumerate(mean_vectors):  
+    n = X[Y==i,:].shape[0]
+    mean_vec = mean_vec.reshape(sample_length,1) # make column vector
+    overall_mean = overall_mean.reshape(sample_length,1) # make column vector
+    S_B += n * (mean_vec - overall_mean).dot((mean_vec - overall_mean).T)
+
+print('between-class Scatter Matrix:\n', S_B)
+S = np.linalg.inv(S_W)*S_B
