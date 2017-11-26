@@ -45,6 +45,48 @@ accr_polynomial_svc_4=confusion_matrix(Y_predict_polynomial_svc_4, Y_test)
 accr_polynomial_svc_4_score=accuracy_score(Y_predict_polynomial_svc_4, Y_test)
 print accr_polynomial_svc_4_score
 
+polynomial_svc_5=svm.SVC(decision_function_shape='ovo',degree=5,kernel='poly')
+polynomial_svc_5.fit(X_train,Y_train)
+Y_predict_polynomial_svc_5=polynomial_svc_5.predict(X_test)  
+accr_polynomial_svc_5=confusion_matrix(Y_predict_polynomial_svc_5, Y_test)
+accr_polynomial_svc_5_score=accuracy_score(Y_predict_polynomial_svc_5, Y_test)
+print accr_polynomial_svc_5_score
+
+polynomial_svc_6=svm.SVC(decision_function_shape='ovo',degree=6,kernel='poly')
+polynomial_svc_6.fit(X_train,Y_train)
+Y_predict_polynomial_svc_6=polynomial_svc_6.predict(X_test)  
+accr_polynomial_svc_6=confusion_matrix(Y_predict_polynomial_svc_6, Y_test)
+accr_polynomial_svc_6_score=accuracy_score(Y_predict_polynomial_svc_6, Y_test)
+print accr_polynomial_svc_6_score
+
+polynomial_svc_7=svm.SVC(decision_function_shape='ovo',degree=7,kernel='poly')
+polynomial_svc_7.fit(X_train,Y_train)
+Y_predict_polynomial_svc_7=polynomial_svc_7.predict(X_test)  
+accr_polynomial_svc_7=confusion_matrix(Y_predict_polynomial_svc_7, Y_test)
+accr_polynomial_svc_7_score=accuracy_score(Y_predict_polynomial_svc_7, Y_test)
+print accr_polynomial_svc_7_score
+
+polynomial_svc_8=svm.SVC(decision_function_shape='ovo',degree=8,kernel='poly')
+polynomial_svc_8.fit(X_train,Y_train)
+Y_predict_polynomial_svc_8=polynomial_svc_8.predict(X_test)  
+accr_polynomial_svc_8=confusion_matrix(Y_predict_polynomial_svc_8, Y_test)
+accr_polynomial_svc_8_score=accuracy_score(Y_predict_polynomial_svc_8, Y_test)
+print accr_polynomial_svc_8_score
+
+polynomial_svc_9=svm.SVC(decision_function_shape='ovo',degree=9,kernel='poly')
+polynomial_svc_9.fit(X_train,Y_train)
+Y_predict_polynomial_svc_9=polynomial_svc_9.predict(X_test)  
+accr_polynomial_svc_9=confusion_matrix(Y_predict_polynomial_svc_9, Y_test)
+accr_polynomial_svc_9_score=accuracy_score(Y_predict_polynomial_svc_9, Y_test)
+print accr_polynomial_svc_9_score
+
+polynomial_svc_10=svm.SVC(decision_function_shape='ovo',degree=10,kernel='poly')
+polynomial_svc_10.fit(X_train,Y_train)
+Y_predict_polynomial_svc_10=polynomial_svc_10.predict(X_test)  
+accr_polynomial_svc_10=confusion_matrix(Y_predict_polynomial_svc_10, Y_test)
+accr_polynomial_svc_10_score=accuracy_score(Y_predict_polynomial_svc_10, Y_test)
+print accr_polynomial_svc_10_score
+
 sigmoid_svc = svm.SVC(decision_function_shape='ovo',kernel='sigmoid')
 sigmoid_svc.fit(X_train,Y_train)
 Y_predict_sigmoid_svc=sigmoid_svc.predict(X_test)  
